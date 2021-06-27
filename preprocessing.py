@@ -1,13 +1,11 @@
 import json
 import re, string, nltk
 from nltk.tokenize import sent_tokenize
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder
 import tensorflow_hub as hub
 import tensorflow as tf
 from tqdm import tqdm
 import numpy as np
-from gensim.models import Word2Vec
-from nltk.corpus import wordnet
 
 
 def clean_word_list(item):

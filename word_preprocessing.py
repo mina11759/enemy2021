@@ -1,18 +1,10 @@
 import json
 import re, string
-from nltk.tokenize import sent_tokenize
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
-import tensorflow_hub as hub
-import tensorflow as tf
 from tqdm import tqdm
 import numpy as np
 import nltk
 from nltk.corpus import stopwords
 import gensim as gensim
-from tensorflow.keras.layers import Conv2D, MaxPool2D, Dense, Input, Reshape, Dropout, concatenate, Activation, Flatten
-from tensorflow.keras.models import Model
-from tensorflow.keras import regularizers
 
 
 def word_preprocess_dataset(dataset_name):

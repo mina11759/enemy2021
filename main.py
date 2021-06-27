@@ -1,5 +1,10 @@
 from sklearn.model_selection import train_test_split
-from models import fc_model, word_fc_model
+# from models import fc_model, word_fc_model
+from models.denseModel import DenseModel
+from models.lstmModel import LstmModel
+from processing.processingManager import ProcessingManager
+from processing.sentPcManager import SentPcManager
+from processing.wordPcManager import WordPcManager
 from sent_preprocessing import preprocess_dataset, sentence_embedding, sentence_padding, label_embedding
 from word_preprocessing import word_preprocess_dataset, desc_word_embedding
 import argparse
@@ -15,20 +20,25 @@ if __name__ == '__main__':
     embedding = args.embedding
 
     if embedding == 'sentence':
-        assignee_label, description, max_sentence_num = preprocess_dataset(str(data))
+        sent_pc_manager = SentPcManager()
+        # assignee_label, description, max_sentence_num = preprocess_dataset(str(data))
+        assignee, description, max_sent_num = sent_pc_manager.load_data()
 
-        print("the number of assignee : ", len(assignee_label)) #
+        print("the number of assignee : ", len(assignee)) #
         print("the number of description : ", len(description))
 
-        num_assignee = len(assignee_label) # label num
+        num_assignee = len(assignee) # label num
         num_description = len(description) # feature num
 
         val_size = 0.2
         range = int(num_description * val_size)
 
         # sentence padding
-        description = sentence_padding(description, max_sentence_num)
-        description = sentence_embedding(description)
+        # description = sentence_padding(description, max_sent_num)
+        # description = sentence_embedding(description)
+        description = sent_pc_manager.padding(description, max_sent_num)
+        description = sent_pc_manager.embed_feature(description)
+
         final_desc = []
 
         for sentences in description:
@@ -37,7 +47,8 @@ if __name__ == '__main__':
 
         final_desc = np.asarray(final_desc)
         # vectorization phase
-        label = label_embedding(assignee_label) # label embedding
+        # label = label_embedding(assignee) # label embedding
+        label = sent_pc_manager.embed_label(assignee)
         final_label = np.asarray(label)
         print("label complete")
         label_num = np.shape(label)[1]

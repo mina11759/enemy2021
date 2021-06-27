@@ -1,6 +1,5 @@
 import tensorflow_hub as hub
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.model_selection import train_test_split
 import tensorflow
 import random
 from metric import top1_acc, top2_acc, top3_acc, top4_acc, top5_acc
@@ -143,7 +142,6 @@ def test_generation(file_name, seed_num=1000):
     print("Trying to mutate data..")
     for idx, desc in enumerate(tqdm(raw_seed_desc)): # desc.shape is [sentence_num,] expected sentence_num = 20
         mutated_desc_pool = sent_remove(desc)
-        # new_desc_list.append(mutated_desc)
         embed_m_desc_list = []
         for m_desc in mutated_desc_pool:
             print(m_desc)
@@ -159,14 +157,10 @@ def test_generation(file_name, seed_num=1000):
 
         orig_predict_val = orig_predict_list[idx]
         orig_label_idx = np.argmax(orig_predict_val)
-        # orig_label_idx = orig_predict_val.index(max(orig_predict_val))
 
         new_label_list = []
         sis_list = []
         for new_predict_val in new_predict_val_list:
-            # orig_predict_val = orig_predict_list[idx]
-            # orig_label_idx = orig_predict_val.index(max(orig_predict_val))
-            # new_label_idx = new_predict_val.index(max(new_predict_val))
             new_label_idx = np.argmax(new_predict_val)
             new_label_list.append(new_label_idx)
 
@@ -202,34 +196,6 @@ def test_generation(file_name, seed_num=1000):
 
     print("Complete mutation !")
     print("[INFO]Num of mutated description : {}".format(len(adv_desc_pool)))
-
-    # # new_predict_list padding (sentence padding)
-    # pad_new_desc_list = sentence_padding(new_desc_list, max_sent_num)
-    # embed_new_desc_list = sentence_embedding(pad_seed_desc)
-    #
-    # for _desc in pad_new_desc_list:
-    #     new_prediction = get_output_weight(_desc, model)
-    #     new_predict_list.append(new_prediction)
-    #
-    # for i in range(seed_num):
-    #     orig_predict = orig_predict_list[i]
-    #     orig_label_idx = orig_predict.index(max(orig_predict))
-    #     mutated_sent_num = len(new_predict_list[i])
-    #     siv_list = list()
-    #     for j in range(mutated_sent_num):
-    #         new_predict = new_predict_list[i][j]
-    #         new_label_idx = new_predict.index(max(new_predict))
-    #         siv = cal_sent_impact_value(orig_label_idx, new_label_idx,
-    #                                     orig_predict, new_predict, len(orig_predict))
-    #         siv_list.append(siv)
-    #
-    #     max_siv_idx = siv_list.index(max(siv_list))
-    #     data_pool.append(new_predict_list[i][max_siv_idx])
-    #
-    # # expected data_pool shape = (seed_num, sentence_num)
-    # # padding
-    # for sentences in data_pool:
-
 
 
 def cal_sent_impact_value(orig_idx, new_idx, orig_pd, new_pd, sent_num):

@@ -234,25 +234,6 @@ def word_preprocess_dataset(dataset_name):
         window=context_window_word2vec,
     )
 
-    # Save word2vec model to use in the model again and again
-    # wordvec_model.save("./data/{0}/word2vec.model".format(dataset_name))
-    #
-    # # The data used for training and testing the classifier is loaded and the preprocessing is performed
-    # for min_train_samples_per_class in [0, 5, 10, 20]:
-    #     print(
-    #         "Preprocessing {0} dataset: Classifier data {1}".format(
-    #             dataset_name, min_train_samples_per_class
-    #         )
-    #     )
-    #     closed_bugs_json = "./data/{0}/classifier_data_{1}.json".format(
-    #         dataset_name, min_train_samples_per_class
-    #     )
-    #
-    #     with open(closed_bugs_json) as data_file:
-    #         text = data_file.read()
-    #         # Fix json files for mozilla core and mozilla firefox
-    #         text = text.replace('" : NULL', '" : "NULL"')
-    #         data = json.loads(text, strict=False)
 
     all_data = []
     all_owner = []
